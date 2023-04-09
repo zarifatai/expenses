@@ -35,7 +35,7 @@ for idx, line in enumerate(input):
     if match:
         current["date"] = match.string
     elif not bool(re.search(r"\d", line)):
-        current[line.lower()] = extract_price(input[idx+1])
+        current[line.lower()] = extract_price(input[idx + 1])
     else:
         continue
 
