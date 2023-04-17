@@ -1,6 +1,6 @@
 import argparse
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-periods", help="Submit number of periods you want to retrieve")
-
-args = parser.parse_args()
+def load_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--periods", default=5, help="Submit number of periods you want to retrieve")
+    return parser.parse_args()

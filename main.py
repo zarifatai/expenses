@@ -6,6 +6,7 @@ import json
 import pandas as pd
 
 import data_utils
+import cli
 
 
 def load_data(data, income_name):
@@ -15,7 +16,7 @@ def load_data(data, income_name):
     return df
 
 
-def get_savings(df, n_periods):
+def get_savings(df, n_periods=5):
     return [round(x, 2) for x in df["saved"].iloc[-n_periods:]]
 
 
@@ -35,12 +36,13 @@ def print_savings_summary(savings):
 
 
 if __name__ == "__main__":
+    args = cli.load_args()
     if not os.path.isfile("exp.json"):
         data_utils.file_to_json()
     with open("exp.json") as f:
         data = json.load(f)
     exp_monthly = load_data(data, income_name="inkomsten")
 
-    n_periods = 5
+    n_periods = int(args.periods)
     savings = get_savings(exp_monthly, n_periods)
     print_savings_summary(savings)
