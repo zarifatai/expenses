@@ -1,6 +1,9 @@
 import json
 import re
 
+import pandas as pd
+
+
 def extract_price(x):
     amt_regex = r"=(.*)"
 
@@ -38,3 +41,10 @@ def file_to_json(filename="exp.txt"):
 
     with open("exp.json", "w") as f:
         json.dump(exp_monthly, f, indent=4)
+
+
+def load_data(data, income_name):
+    df = pd.DataFrame.from_dict(data).fillna(0)
+    df["expenses"] = df.drop(["date", income_name], axis=1).sum(axis=1)
+    df["saved"] = df[income_name] - df["expenses"]
+    return df
