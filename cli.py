@@ -8,7 +8,7 @@ def load_args():
         choices=["saved", "spent", "summary"],
         nargs="?",
         default="summary",
-        )
+    )
     parser.add_argument(
         "-p",
         "--periods",

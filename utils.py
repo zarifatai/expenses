@@ -9,6 +9,7 @@ def print_colored(amt, thld=50):
     else:
         print(amt)
 
+
 def validate_periods(expenses, periods):
     if periods <= len(expenses) or period != -1:
         return expenses.iloc[-periods:]
