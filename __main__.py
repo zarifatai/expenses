@@ -1,6 +1,5 @@
-import os
-
 import json
+import os
 
 import cli
 import data_utils
