@@ -11,10 +11,17 @@ if not os.path.isfile("exp.json"):
 with open("exp.json") as f:
     expenses = data_utils.load_data(json.load(f), "inkomsten")
 
-cmd_mapping = {
+analysis_commands = {
     "saved": utils.saved_cmd,
     "summary": utils.summary_cmd,
     "spent": utils.spent_cmd,
 }
 
-cmd_mapping[args.cmd](expenses, args.periods)
+if args.cmd in analysis_commands.keys():
+    analysis_commands[args.cmd](expenses, args.periods)
+
+if args.new:
+    new_period, income_names = cli.new_period()
+    new_period["date"] = args.new[0]
+    print("Income names:", income_names)
+    print(new_period)
