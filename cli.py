@@ -5,9 +5,10 @@ def load_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "cmd",
-        choices=["saved", "spent", "summary"],
+        choices=["saved", "spent", "summary", "new"],
         nargs="?",
         default="summary",
+        help="Submit commando [saved, spent, summary, new]"
     )
     parser.add_argument(
         "-p",
@@ -17,24 +18,27 @@ def load_args():
         help="Submit number of periods you want to retrieve",
     )
     parser.add_argument(
-        "-n",
-        "--new",
+        "-d",
+        "--date",
         nargs=1,
         help="Submit date of new period (yyy-mm-dd).\
         Date must be later than existing periods.",
     )
     return parser.parse_args()
 
+# TODO: fix bug with income_names
 
-def new_period():
+def new_period(_, args):
     period = {}
-    expenses_completed = False
+    if not args.date:
+        period["date"] = str(datetime.date())
+    else:
+        period["date"] = args.date
+    expenses_completed = False 
     while not expenses_completed:
-        expense_name = input("Enter expense category name (enter x to cancel)\n")
+        expense_name = input("Enter expense category name (enter x to cancel)\n") 
         while expense_name in period.keys():
-            expense_name = input(
-                "This category already exists. Please enter a new category name (enter x to cancel)"
-            )
+            expense_name = input("This category already exists. Please enter a new category name (enter x to cancel)\n")
         if expense_name != "x":
             expense_completed = False
             amounts = []
@@ -53,9 +57,7 @@ def new_period():
     while not incomes_completed:
         income_name = input("Enter income category name (enter x to cancel)\n")
         while income_name in period.keys():
-            income_name = input(
-                "This category already exists. Please enter a new category name (enter x to cancel)"
-            )
+            income_name = input("This category already exists. Please enter a new category name (enter x to cancel)\n")
         if income_name != "x":
             income_names.append(income_name)
             income_completed = False
