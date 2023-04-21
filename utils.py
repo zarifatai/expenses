@@ -16,7 +16,8 @@ def validate_periods(expenses, periods):
     return expenses
 
 
-def saved_cmd(expenses, periods):
+def saved_cmd(expenses, args):
+    periods = args.periods
     savings = expenses["saved"].round(2)
     savings = validate_periods(savings, periods)
     [print_colored(x) for x in list(savings)]
@@ -24,7 +25,8 @@ def saved_cmd(expenses, periods):
     print_colored(round(sum(savings), 2))
 
 
-def spent_cmd(expenses, periods):
+def spent_cmd(expenses, args):
+    periods = args.periods
     spent = expenses["expenses"].round(2)
     spent = validate_periods(spent, periods)
     [print(x) for x in list(spent)]
@@ -32,7 +34,8 @@ def spent_cmd(expenses, periods):
     print(round(sum(spent), 2))
 
 
-def summary_cmd(expenses, periods):
+def summary_cmd(expenses, args):
+    periods = args.periods
     subset = expenses[["expenses", "saved"]].round(2)
     subset = validate_periods(subset, periods)
     print(f"Number of periods: {len(subset)}\n")
