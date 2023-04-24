@@ -75,12 +75,13 @@ def add_category_type(period, category_type):
 
 
 def new_period(expenses, args):
-    latest_date = expenses["date"].max()
+    latest_date = expenses["date"].dt.date.max()
     internal_categories = ["expenses", "income", "saved"]
     categories = [x for x in expenses.columns if x not in internal_categories]
     print("Existing categories:")
     [print(category) for category in categories]
-    print(f"\nDate latest entry: {latest_date}\n")
+    print(f"\nDate latest entry:\t{latest_date}")
+    print(f"Current date:\t\t{args.date[0]}\n")
     period = {}
     if not args.date:
         period["date"] = str(datetime.date())
