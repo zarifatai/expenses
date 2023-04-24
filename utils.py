@@ -1,3 +1,4 @@
+import pandas as pd
 from termcolor import colored
 
 
@@ -36,7 +37,16 @@ def spent_cmd(expenses, args):
 
 def summary_cmd(expenses, args):
     periods = args.periods
-    subset = expenses[["expenses", "saved"]].round(2)
+    subset = expenses[["expenses", "income", "saved"]]
     subset = validate_periods(subset, periods)
     print(f"Number of periods: {len(subset)}\n")
-    print(subset.describe().iloc[[1, 2, 3, 7]])
+    print(subset.describe().iloc[[1, 2, 3, 7]].round(2))
+
+
+def load_data(data, income_categories):
+    df = pd.DataFrame.from_dict(data).fillna(0)
+    df["date"] = pd.to_datetime(df["date"])
+    df["expenses"] = df.drop(["date"]+income_categories, axis=1).sum(axis=1)
+    df["income"] = df[income_categories].sum(axis=1)
+    df["saved"] = df["income"] - df["expenses"]
+    return df
