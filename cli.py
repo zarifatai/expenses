@@ -40,7 +40,7 @@ def get_amount():
     valid_amount = False
     while not valid_amount:
         try:
-            amount = input("Pass amount or pass x when finished\n")
+            amount = input("Pass amount (pass x when finished)\n")
             if amount != "x":
                 amount = float(amount)
             valid_amount = True
@@ -62,6 +62,7 @@ def add_category_type(period, category_type):
             category_completed = False
             amounts = []
             while not category_completed:
+                print(f"[{category_name} = {sum(amounts)}]")
                 amount = get_amount()
                 if amount != "x":
                     amounts.append(amount)
@@ -73,7 +74,13 @@ def add_category_type(period, category_type):
     return period, categories_added
 
 
-def new_period(_, args):
+def new_period(expenses, args):
+    latest_date = expenses["date"].max()
+    internal_categories = ["expenses", "income", "saved"]
+    categories = [x for x in expenses.columns if x not in internal_categories]
+    print("Existing categories:")
+    [print(category) for category in categories]
+    print(f"\nDate latest entry: {latest_date}\n")
     period = {}
     if not args.date:
         period["date"] = str(datetime.date())
