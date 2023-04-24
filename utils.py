@@ -1,3 +1,5 @@
+import json
+
 import pandas as pd
 from termcolor import colored
 
@@ -50,3 +52,17 @@ def load_data(data, income_categories):
     df["income"] = df[income_categories].sum(axis=1)
     df["saved"] = df["income"] - df["expenses"]
     return df
+
+
+def write_to_json(data, filename="exp.json"):
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=4)
+
+
+def add_period(data, new_period, income_categories):
+    data = data.append(new_period)
+    write_to_json(data)
+    return load_data(data, income_categories)
+
+
+
