@@ -1,4 +1,5 @@
 import argparse
+from termcolor import colored
 
 
 def load_args():
@@ -26,49 +27,56 @@ def load_args():
     )
     return parser.parse_args()
 
-# TODO: fix bug with income_names
+def get_category_name(category_name, periods):
+    while category_name in periods:
+        print(colored("This category already exists!", "red"))
+        category_name = input("Please pass a new category name (pass x to cancel)\n")
+    return category_name
+
+
+def get_amount():
+    valid_amount = False
+    while not valid_amount:
+        try:
+            amount = input("Pass amount or pass x when finished\n")
+            if amount != "x":
+                amount = float(amount)
+            valid_amount = True
+        except:
+            print(colored("Wrong input! Please pass an integer or float number", "red"))
+    return amount
+
+def add_category_type(period, category_type):
+    categories_finished = False 
+    categories_added = []
+    while not categories_finished:
+        category_name = get_category_name(input(f"Pass {category_type} category name (pass x to cancel)\n"), period.keys())
+        if category_name != "x":
+            categories_added.append(category_name)
+            category_completed = False
+            amounts = []
+            while not category_completed:
+                amount = get_amount()
+                if amount != "x":
+                    amounts.append(amount)
+                else:
+                    period[category_name] = sum(amounts)
+                    category_completed = True
+        else:
+            categories_finished = True
+    return period, categories_added
+
 
 def new_period(_, args):
     period = {}
     if not args.date:
         period["date"] = str(datetime.date())
     else:
-        period["date"] = args.date
-    expenses_completed = False 
-    while not expenses_completed:
-        expense_name = input("Enter expense category name (enter x to cancel)\n") 
-        while expense_name in period.keys():
-            expense_name = input("This category already exists. Please enter a new category name (enter x to cancel)\n")
-        if expense_name != "x":
-            expense_completed = False
-            amounts = []
-            while not expense_completed:
-                amount = input("Enter amount or (press x when finished)\n")
-                if amount != "x":
-                    amounts.append(float(amount))
-                else:
-                    period[expense_name] = sum(amounts)
-                    expense_completed = True
-        else:
-            expenses_completed = True
+        period["date"] = args.date[0]
 
-    incomes_completed = False
-    income_names = []
-    while not incomes_completed:
-        income_name = input("Enter income category name (enter x to cancel)\n")
-        while income_name in period.keys():
-            income_name = input("This category already exists. Please enter a new category name (enter x to cancel)\n")
-        if income_name != "x":
-            income_names.append(income_name)
-            income_completed = False
-            amounts = []
-            while not income_completed:
-                amount = input("Enter amount or (press x when finished)\n")
-                if amount != "x":
-                    amounts.append(float(amount))
-                else:
-                    period[income_name] = sum(amounts)
-                    income_completed = True
-        else:
-            incomes_completed = True
+    category_types = ["expense", "income"]
+    for category_type in category_types:
+        period, new_categories = add_category_type(period, category_type)
+        if category_type == "income":
+            income_names = new_categories
     return (period, income_names)
