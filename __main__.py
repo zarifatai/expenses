@@ -18,7 +18,8 @@ commands = {
     "new": cli.new_period,
 }
 
-commands[args.cmd](expenses, args)
+ret = commands[args.cmd](expenses, args)
 
-print("Income names:", income_names)
-print(new_period)
+print(expenses)
+print("Income names:", ret[1])
+print(ret[0])
