@@ -1,4 +1,5 @@
 import argparse
+
 from termcolor import colored
 
 
@@ -9,7 +10,7 @@ def load_args():
         choices=["saved", "spent", "summary", "new"],
         nargs="?",
         default="summary",
-        help="Submit commando [saved, spent, summary, new]"
+        help="Submit commando [saved, spent, summary, new]",
     )
     parser.add_argument(
         "-p",
@@ -26,6 +27,7 @@ def load_args():
         Date must be later than existing periods.",
     )
     return parser.parse_args()
+
 
 def get_category_name(category_name, periods):
     while category_name in periods:
@@ -46,11 +48,15 @@ def get_amount():
             print(colored("Wrong input! Please pass an integer or float number", "red"))
     return amount
 
+
 def add_category_type(period, category_type):
-    categories_finished = False 
+    categories_finished = False
     categories_added = []
     while not categories_finished:
-        category_name = get_category_name(input(f"Pass {category_type} category name (pass x to cancel)\n"), period.keys())
+        category_name = get_category_name(
+            input(f"Pass {category_type} category name (pass x to cancel)\n"),
+            period.keys(),
+        )
         if category_name != "x":
             categories_added.append(category_name)
             category_completed = False
