@@ -48,7 +48,7 @@ def summary_cmd(expenses, args):
 def load_data(data, income_categories):
     df = pd.DataFrame.from_dict(data).fillna(0)
     df["date"] = pd.to_datetime(df["date"])
-    df["expenses"] = df.drop(["date"]+income_categories, axis=1).sum(axis=1)
+    df["expenses"] = df.drop(["date"] + income_categories, axis=1).sum(axis=1)
     df["income"] = df[income_categories].sum(axis=1)
     df["saved"] = df["income"] - df["expenses"]
     return df
@@ -63,6 +63,3 @@ def add_period(data, new_period, income_categories):
     data = data.append(new_period)
     write_to_json(data)
     return load_data(data, income_categories)
-
-
-
