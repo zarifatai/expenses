@@ -45,6 +45,12 @@ def summary_cmd(expenses, args):
     print(subset.describe().iloc[[1, 2, 3, 7]].round(2))
 
 
+def read_file(filename, income_categories):
+    with open(filename) as f:
+        data = json.load(f)
+        return load_data(data, income_categories)
+
+
 def load_data(data, income_categories):
     df = pd.DataFrame.from_dict(data).fillna(0)
     df["date"] = pd.to_datetime(df["date"])
@@ -60,6 +66,6 @@ def write_to_json(data, filename="exp.json"):
 
 
 def add_period(data, new_period, income_categories):
-    data = data.append(new_period)
+    data.append(new_period)
     write_to_json(data)
     return load_data(data, income_categories)
