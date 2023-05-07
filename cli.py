@@ -29,14 +29,14 @@ def load_args():
     return parser.parse_args()
 
 
-def get_category_name(category_name, periods):
+def _get_category_name(category_name, periods):
     while category_name in periods:
         print(colored("This category already exists!", "red"))
         category_name = input("Please pass a new category name (pass x to cancel)\n")
     return category_name
 
 
-def get_amount():
+def _get_amount():
     valid_amount = False
     while not valid_amount:
         try:
@@ -49,11 +49,11 @@ def get_amount():
     return amount
 
 
-def add_category_type(period, category_type):
+def _add_category_type(period, category_type):
     categories_finished = False
     categories_added = []
     while not categories_finished:
-        category_name = get_category_name(
+        category_name = _get_category_name(
             input(f"Pass {category_type} category name (pass x to cancel)\n"),
             period.keys(),
         )
@@ -63,7 +63,7 @@ def add_category_type(period, category_type):
             amounts = []
             while not category_completed:
                 print(f"[{category_name} = {sum(amounts)}]")
-                amount = get_amount()
+                amount = _get_amount()
                 if amount != "x":
                     amounts.append(amount)
                 else:
@@ -90,7 +90,7 @@ def new_period(expenses, args):
 
     category_types = ["expense", "income"]
     for category_type in category_types:
-        period, new_categories = add_category_type(period, category_type)
+        period, new_categories = _add_category_type(period, category_type)
         if category_type == "income":
             income_names = new_categories
     return (period, income_names)
