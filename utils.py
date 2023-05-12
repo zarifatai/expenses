@@ -59,8 +59,11 @@ def load_data(data, income_categories):
 
 
 def write_to_json(data, filename="exp.json"):
-    with open(filename, "w") as f:
-        json.dump(data, f, indent=4)
+    if data is not None:
+        with open(filename, "w") as f:
+            json.dump(data, f, indent=4)
+    else:
+        print("Failed to save: data is empty")
 
 
 def add_period(data, new_period, income_categories):
