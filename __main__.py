@@ -7,7 +7,7 @@ import re
 
 args = cli.load_args()
 income_categories = ["inkomsten"]
-expenses = utils.read_file("exp.json", income_categories)
+expenses, calculated_amounts = utils.read_file("exp.json", income_categories)
 
 commands = {
     "saved": utils.saved_cmd,
