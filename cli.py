@@ -10,20 +10,20 @@ def load_args():
         choices=["saved", "spent", "summary", "new"],
         nargs="?",
         default="summary",
-        help="Submit commando [saved, spent, summary, new]",
+        help="Submit commando [saved, spent, summary, new].",
     )
     parser.add_argument(
         "-p",
         "--periods",
         default=5,
         type=int,
-        help="Submit number of periods you want to retrieve",
+        help="Submit number of periods you want to retrieve. (default=5)",
     )
     parser.add_argument(
         "-d",
         "--date",
         nargs=1,
-        help="Submit date of new period (yyy-mm-dd).\
+        help="Submit date of new period (yyyy-mm-dd).\
         Date must be later than existing periods.",
     )
     return parser.parse_args()
@@ -32,7 +32,7 @@ def load_args():
 def _get_category_name(category_name, periods):
     while category_name in periods:
         print(colored("This category already exists!", "red"))
-        category_name = input("Please pass a new category name (pass x to cancel)\n")
+        category_name = input("Please pass a new category name (pass x when finished)\n")
     return category_name
 
 
@@ -54,7 +54,7 @@ def _add_category_type(period, category_type):
     categories_added = []
     while not categories_finished:
         category_name = _get_category_name(
-            input(f"Pass {category_type} category name (pass x to cancel)\n"),
+            input(f"Pass {category_type} category name (pass x when finished)\n"),
             period.keys(),
         )
         if category_name != "x":
@@ -79,7 +79,7 @@ def new_period(expenses, args):
     internal_categories = ["expenses", "income", "saved"]
     categories = [x for x in expenses.columns if x not in internal_categories]
     print("Existing categories:")
-    [print(category) for category in categories]
+    [print(category) for category in categories if category != "date"]
     print(f"\nDate latest entry:\t{latest_date}")
     print(f"Current date:\t\t{args.date[0]}\n")
     period = {}
