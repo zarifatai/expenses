@@ -32,7 +32,9 @@ def load_args():
 def _get_category_name(category_name, periods):
     while category_name in periods:
         print(colored("This category already exists!", "red"))
-        category_name = input("Please pass a new category name (pass x when finished)\n")
+        category_name = input(
+            "Please pass a new category name (pass x when finished)\n"
+        )
     return category_name
 
 

@@ -55,7 +55,14 @@ def load_data(data, income_categories):
     expenses = df.drop(["date"] + income_categories, axis=1).sum(axis=1)
     incomes = df[income_categories].sum(axis=1)
     saved_amounts = incomes - expenses
-    return df, pd.concat([expenses.rename("expense"), incomes.rename("income"), saved_amounts.rename("saved")], axis=1)
+    return df, pd.concat(
+        [
+            expenses.rename("expense"),
+            incomes.rename("income"),
+            saved_amounts.rename("saved"),
+        ],
+        axis=1,
+    )
 
 
 def write_to_json(data, filename="exp.json"):
